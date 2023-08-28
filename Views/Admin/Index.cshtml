@@ -1,0 +1,37 @@
+﻿@model IndexView
+
+<div class="container">
+
+    <h2 class="text-center">Welcome, @User.Identity.Name!</h2>
+
+    <div class="d-flex justify-content-center mb-3">
+        <div class="btn-group" role="group" aria-label="Actions">
+            @Html.ActionLink("Change Password", "ChangePassword", "Admin", null, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Add User", "AddUser", "Admin", null, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Manage Users", "ManageUsers", "Admin", null, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Create Voting Round", "CreateVotingRound", "Admin", null, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Manage Voting Rounds", "ManageVotingRounds", "Admin", null, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Logout", "Logout", "Account", null, new { @class = "btn btn-danger" })
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <p class="text-success">@ViewBag.Message</p>
+    }
+
+    <div class="row">
+
+        <div class="col-md-4">
+            @Html.Partial("_CurrentRound", Model.CurrentRounds)
+        </div>
+        <div class="col-md-4">
+            @Html.Partial("_FutureRound", Model.FutureRounds)
+        </div>
+        <div class="col-md-4">
+            @Html.Partial("_PreviousRound", Model.PreviousRounds)
+        </div>
+
+    </div>
+
+</div>

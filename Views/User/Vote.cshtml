@@ -1,0 +1,33 @@
+﻿@model VoteView
+
+<h2 class="mb-4">Vote in Current Round</h2>
+<a href="@Url.Action("Index", "User")" class="btn btn-secondary mb-3">Back to the main page</a>
+
+<div class="card">
+
+    <div class="card-body">
+
+        <form asp-action="Vote" method="post">
+
+            <input type="hidden" asp-for="VotingRoundId" />
+            <div class="form-group">
+
+                <label>Select your answer:</label>
+                @for (var i = 0; i < Model.PossibleAnswers.Count; i++)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" asp-for="SelectedAnswerIndex" value="@i" />
+                        <label class="form-check-label">@Model.PossibleAnswers[i]</label>
+                    </div>
+                }
+                <span asp-validation-for="SelectedAnswerIndex" class="text-danger"></span>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary">Vote</button>
+
+        </form>
+
+    </div>
+
+</div>

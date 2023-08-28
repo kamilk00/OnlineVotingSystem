@@ -1,0 +1,59 @@
+﻿@model List<OnlineVotingSystem.Models.VotingRound>
+
+@{
+    ViewData["Title"] = "Manage Voting Rounds";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="mb-4">Manage Voting Rounds</h1>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+    <a href="@Url.Action("Index", "Admin")" class="btn btn-secondary mb-3">Back to Main Page</a>
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <div class="alert alert-info">
+            @ViewBag.Message
+        </div>
+    }
+
+</div>
+
+<div class="table-responsive">
+
+    <table class="table table-bordered">
+
+        <thead>
+            <tr>
+                <th>Question</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var votingRound in Model)
+            {
+
+                <tr>
+                    <td>@votingRound.Question</td>
+                    <td>@votingRound.StartDate</td>
+                    <td>@votingRound.EndDate</td>
+                    <td>
+                        @Html.ActionLink("Edit", "EditVotingRound", new { id = votingRound._id }, new { @class = "btn btn-primary btn-sm mr-2" })
+                        <form method="post" action="@Url.Action("DeleteVotingRound", "Admin", new { id = votingRound._id })" onsubmit="return confirm('Are you sure you want to delete this voting round?');">
+                            <input type="hidden" name="_method" value="POST" />
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+
+            }
+
+        </tbody>
+
+    </table>
+
+</div>

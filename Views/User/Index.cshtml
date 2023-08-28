@@ -1,0 +1,33 @@
+﻿@model IndexView
+
+<div class="container">
+
+    <h2 class="text-center">Welcome, @User.Identity.Name!</h2>
+
+    <div class="d-flex justify-content-center mb-3">
+        <div class="btn-group" role="group" aria-label="Actions">
+            @Html.ActionLink("Change Password", "ChangePassword", "User", null, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Logout", "Logout", "Account", null, new { @class = "btn btn-danger" })
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <p class="text-success">@ViewBag.Message</p>
+    }
+
+    <div class="row">
+
+        <div class="col-md-4">
+            @Html.Partial("_CurrentRound", Model.CurrentRounds)
+        </div>
+        <div class="col-md-4">
+            @Html.Partial("_FutureRound", Model.FutureRounds)
+        </div>
+        <div class="col-md-4">
+            @Html.Partial("_PreviousRound", Model.PreviousRounds)
+        </div>
+
+    </div>
+
+</div>

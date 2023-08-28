@@ -1,0 +1,36 @@
+﻿@model List<OnlineVotingSystem.Models.VotingRound>
+
+<div class="container">
+
+    @if (Model.Count > 0)
+    {
+
+        <h3 class="mb-3">Previous Voting Rounds</h3>
+        @foreach (var votingRound in @Model)
+        {
+
+            <div class="card mb-3">
+
+                <div class="card-body">
+
+                    <h5 class="card-title">Question: @votingRound.Question</h5>
+                    <p class="card-text">Start Date: @votingRound.StartDate</p>
+                    <p class="card-text">End Date: @votingRound.EndDate</p>
+                    <div>
+                        @Html.ActionLink("Results", "Results", "User", new { id = @votingRound._id }, new { @class = "btn btn-primary" })
+                    </div>
+
+                </div>
+
+            </div>
+
+        }
+
+    }
+
+    else
+    {
+        <p class="text-center">No previous voting rounds found.</p>
+    }
+
+</div>

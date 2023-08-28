@@ -1,0 +1,117 @@
+﻿@model OnlineVotingSystem.Models.VotingRound
+
+<div class="container">
+
+    <h2>Create Voting Round</h2>
+    <a href="@Url.Action("Index", "Admin")" class="btn btn-secondary mb-3">Back to the main page</a>
+
+    @using (Html.BeginForm())
+    {
+
+        @Html.AntiForgeryToken()
+
+        @if (!string.IsNullOrEmpty(ViewBag.Message))
+        {
+            <div class="alert alert-info">
+                @ViewBag.Message
+            </div>
+        }
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Question)
+            @Html.TextBoxFor(model => model.Question, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Question)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.StartDate)
+            @Html.TextBoxFor(model => model.StartDate, "{0:yyyy-MM-dd HH:mm}", new { @class = "form-control datetimepicker", data_val = "true", data_val_datetime = "Invalid datetime format." })
+            @Html.ValidationMessageFor(model => model.StartDate)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndDate)
+            @Html.TextBoxFor(model => model.EndDate, "{0:yyyy-MM-dd HH:mm}", new { @class = "form-control datetimepicker", data_val = "true", data_val_datetime = "Invalid datetime format." })
+            @Html.ValidationMessageFor(model => model.EndDate)
+        </div>
+
+        <div class="form-group">
+
+            <h4>Possible Answers:</h4>
+            <ul id="possibleAnswersList">
+                @for (int i = 0; i < Model.PossibleAnswers.Count; i++)
+                {
+                    <li>
+                        @Html.TextBoxFor(model => model.PossibleAnswers[i], new { @class = "form-control" })
+                        <button type="button" class="removePossibleAnswerBtn btn btn-danger">Remove</button>
+                    </li>
+                }
+            </ul>
+            <button type="button" id="addPossibleAnswerBtn" class="btn btn-primary">Add Possible Answer</button>
+
+        </div>
+
+        <div class="form-group">
+
+            @Html.HiddenFor(model => model._id)
+            @Html.HiddenFor(model => model.UserCanVote)
+            @Html.HiddenFor(model => model.UserVoted)
+            @Html.HiddenFor(model => model.Votes)
+
+            <h4>Select Users Who Can Vote:</h4>
+            @foreach (var user in ViewBag.Users)
+            {
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="UserCanVote" value="@user._id" /> @user.Username
+                    </label>
+                </div>
+            }
+
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create</button>
+
+    }
+
+</div>
+
+
+@section scripts {
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+
+    <script>
+
+        $(document).ready(function () {
+            var possibleAnswersCount = @Model.PossibleAnswers.Count;
+
+            $("#addPossibleAnswerBtn").click(function () {
+                var listItem = $("<li>");
+                var input = $("<input>").attr("type", "text").attr("name", "PossibleAnswers[" + possibleAnswersCount + "]").addClass("form-control");
+                listItem.append(input);
+                listItem.append('<button type="button" class="removePossibleAnswerBtn btn btn-danger">Remove</button>');
+                $("#possibleAnswersList").append(listItem);
+
+                possibleAnswersCount++;
+            });
+
+            $(document).on("click", ".removePossibleAnswerBtn", function () {
+                $(this).closest("li").remove();
+            });
+
+            $(".datetimepicker").datetimepicker({
+                format: "yyyy-mm-dd hh:ii",
+                autoclose: true,
+                todayBtn: true,
+                pickerPosition: "bottom-left"
+            });
+
+        });
+
+    </script>
+
+}
